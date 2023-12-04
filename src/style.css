@@ -23,15 +23,11 @@ a:hover {
 }
 
 body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+  background: #696ec9;
 }
 
-h1 {
-  font-size: 3.2em;
+p {
+  font-size: 13px;
   line-height: 1.1;
 }
 
@@ -40,27 +36,6 @@ h1 {
   margin: 0 auto;
   padding: 2rem;
   text-align: center;
-}
-
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.vanilla:hover {
-  filter: drop-shadow(0 0 2em #3178c6aa);
-}
-
-.card {
-  padding: 2em;
-}
-
-.read-the-docs {
-  color: #888;
 }
 
 button {
@@ -92,5 +67,118 @@ button:focus-visible {
   }
   button {
     background-color: #f9f9f9;
+  }
+}
+
+.product_container {
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  grid-auto-rows: 30em;
+  grid-column-gap: 50px;
+  grid-row-gap: 1em;
+  word-wrap: break-word;
+}
+
+.product_image {
+  width: 350px;
+  height: 350px;
+  border-radius: 10px;
+}
+.product_card {
+  width: 100%;
+}
+.product_info {
+  width: 500px;
+  flex-wrap: nowrap;
+}
+
+.modal {
+  position: fixed;
+  top: 10%;
+  bottom: 0;
+  right: 0;
+  left: 25%;
+  overflow: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 99;
+  padding: 30px 0;
+  width: 600px;
+  height: 600px;
+  background: #454997;
+  border-radius: 10px;
+}
+
+.modal_hide {
+  display: flex;
+  flex-flow: row;
+  justify-content: center;
+  gap: 10px;
+  position: fixed;
+  width: 40rem;
+  height: 40px;
+  top: 80%;
+  left: 60%;
+  background: #454997;
+
+  border-radius: 10px;
+}
+
+.show_btn,
+.hide_btn,
+.close_btn {
+  background: #535bf2;
+  width: 100px;
+}
+
+.spinner {
+}
+@keyframes spinner-line-fade-more {
+  0%,
+  100% {
+    opacity: 0; /* minimum opacity */
+  }
+  1% {
+    opacity: 1;
+  }
+}
+
+@keyframes spinner-line-fade-quick {
+  0%,
+  39%,
+  100% {
+    opacity: 0.25; /* minimum opacity */
+  }
+  40% {
+    opacity: 1;
+  }
+}
+
+@keyframes spinner-line-fade-default {
+  0%,
+  100% {
+    opacity: 0.22; /* minimum opacity */
+  }
+  1% {
+    opacity: 1;
+  }
+}
+
+@keyframes spinner-line-shrink {
+  0%,
+  25%,
+  100% {
+    /* minimum scale and opacity */
+    transform: scale(0.5);
+    opacity: 0.25;
+  }
+  26% {
+    transform: scale(1);
+    opacity: 1;
   }
 }

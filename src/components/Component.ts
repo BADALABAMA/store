@@ -5,77 +5,93 @@ export interface IComponent {
   className: string;
   id: string;
   children: [];
-  events?: any;
+  events?: EventListener;
   textContent?: string;
+  attrs?: any;
+  src?: string;
 }
 
-export class Component {
-  private _tagName: string;
-  private _className: string;
-  private _id: string;
-  private _children: [];
-  private _events: any;
-  private _textContent?: string;
+export class Component implements IComponent {
+  tagName: string;
+  className: string;
+  id: string;
+  children: [];
+  events?: any;
+  textContent?: string;
+  attrs?: string[];
+  src?: string;
 
   constructor(
     tagName: string,
     className: string,
     id: string,
     children: [],
-    events?: any,
-    textContent?: string
+    events?: EventListener,
+    textContent?: string,
+    attrs?: string[],
+    src?: string
   ) {
-    this._tagName = tagName;
-    this._className = className;
-    this._id = id;
-    this._children = children;
-    this._events = events;
-    this._textContent = textContent;
+    this.tagName = tagName;
+    this.className = className;
+    this.id = id;
+    this.children = children;
+    this.events = events;
+    this.textContent = textContent;
+    this.attrs = attrs;
+    this.src = src;
   }
+
+  setAttributes(attributes: string[]): void {
+    this.attrs = { ...this.attrs, ...attributes };
+  }
+
   getTagName(): string {
-    return this._tagName;
+    return this.tagName;
   }
   getClassName(): string {
-    return this._className;
+    return this.className;
   }
   getId(): string {
-    return this._id;
+    return this.id;
   }
   getChildren(): [] {
-    return this._children;
+    return this.children;
   }
   getEvents(): any | undefined {
-    return this._events;
+    return this.events;
   }
   getTextContent(): string | undefined {
-    return this._textContent;
+    return this.textContent;
   }
   setClassName(className: string) {
-    this._className = className;
+    this.className = className;
   }
 
   addChildren(children: []) {
     for (const child of children) {
-      this._children.push(child);
+      this.children.push(child);
     }
   }
+  setSrc(src: string) {
+    this.src = src;
+  }
   setId(id: string) {
-    this._id = id;
+    this.id = id;
   }
   setTagName(tagName: string) {
-    this._tagName = tagName;
+    this.tagName = tagName;
   }
 
   setChildren(children: []) {
-    this._children = children;
+    this.children = children;
   }
 
-  setEvents(events: Event) {
-    this._events = events;
+  setEvents(events: EventListener) {
+    this.events = events;
   }
 
   setText(textContent: string) {
-    this._textContent = textContent;
+    this.textContent = textContent;
   }
 
   toHTML() {

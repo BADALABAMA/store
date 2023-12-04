@@ -3,7 +3,6 @@ interface IApp {
   tagName: string;
   className: string;
   id: string;
-
   children: [];
 }
 export class App extends Component {
