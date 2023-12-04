@@ -106,6 +106,11 @@ const addProductBtn = new Button({
             imageInput,
             main
           );
+          titleInput.remove();
+          priceInput.remove();
+          descriptionInput.remove();
+          imageInput.remove();
+          addProductBtn.remove();
         }
       },
     },
@@ -129,20 +134,6 @@ const addNewProductBtn = new Button({
             imageInput,
             addProductBtn
           );
-        } else {
-          createNewProduct(
-            titleInput,
-            priceInput,
-            descriptionInput,
-            idInput,
-            imageInput,
-            main
-          );
-          titleInput.remove();
-          priceInput.remove();
-          descriptionInput.remove();
-          imageInput.remove();
-          addProductBtn.remove();
         }
       },
     },
@@ -158,7 +149,6 @@ const loginButton = new Button({
 
       listener: () => {
         if (validateEmail(emailInput) && validatePassword(passwordInput)) {
-          const target = document.getElementById('foo');
           const spinner = new Spinner(opts).spin();
           main.appendChild(spinner.el);
           setTimeout(() => {

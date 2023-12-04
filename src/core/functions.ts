@@ -19,15 +19,14 @@ interface IData {
   id: number;
   images: string[];
 }
-const productContainer = document.createElement('div');
-productContainer.className = 'product_container';
-
-let isExistModal: boolean = false;
-
 enum Admin {
   email = 'admin@22.ua',
   password = 'admin22',
 }
+const productContainer = document.createElement('div');
+productContainer.className = 'product_container';
+
+let isExistModal: boolean = false;
 
 export async function getData(node: HTMLElement, page: number = 1) {
   let limit = 20;
@@ -301,17 +300,24 @@ export async function createNewProduct(
     images: [imageInput.value],
   };
   const url = 'https://api.escuelajs.co/api/v1/products/';
+  try {
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(postData),
+    });
 
-  const response = await fetch(url, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(postData),
-  });
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
 
-  const data = await response.json();
-  createProductCard(data, node);
-  clearInputs(titleInput, priceInput, descriptionInput, imageInput);
-  console.log('Success:', data);
+    const data = await response.json();
+    createProductCard(data, node);
+    clearInputs(titleInput, priceInput, descriptionInput, imageInput);
+    console.log('Success:', data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
 }
