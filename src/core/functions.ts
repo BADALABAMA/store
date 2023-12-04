@@ -221,7 +221,7 @@ function createPagination(
   currentPage: number,
   node: HTMLElement
 ) {
-  const totalPages = Math.ceil(data.length / 10);
+  const totalPages = Math.ceil(data.length / 7);
 
   const paginationContainer = document.createElement('div');
   paginationContainer.className = 'pagination';

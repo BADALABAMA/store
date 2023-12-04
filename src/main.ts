@@ -31,6 +31,8 @@ const opts = {
   className: 'spinner', // The CSS class to assign to the spinner
   position: 'absolute', // Element positioning
 };
+const inputContainer = document.createElement('div');
+inputContainer.className = 'input__container';
 
 const header = new Header({
   tagName: 'header',
@@ -97,7 +99,7 @@ const addProductBtn = new Button({
       type: 'click',
 
       listener: () => {
-        if (main.contains(titleInput)) {
+        if (main.contains(inputContainer)) {
           createNewProduct(
             titleInput,
             priceInput,
@@ -111,13 +113,14 @@ const addProductBtn = new Button({
           descriptionInput.remove();
           imageInput.remove();
           addProductBtn.remove();
+        } else {
+          throw new Error(" input's  cannot be empty");
         }
       },
     },
   ],
 }).toHTML();
-const inputContainer = document.createElement('div');
-inputContainer.className = 'input__container';
+
 const addNewProductBtn = new Button({
   textContent: 'Add new product',
   className: 'add_new_product_btn',
@@ -126,6 +129,7 @@ const addNewProductBtn = new Button({
       type: 'click',
 
       listener: () => {
+        header.append(inputContainer);
         if (!inputContainer.contains(titleInput)) {
           inputContainer.append(
             titleInput,
@@ -171,7 +175,7 @@ const app = new App({
   tagName: 'div',
   className: 'app',
   id: 'app',
-  children: [main, header],
+  children: [header, main],
 }).toHTML();
-main.append(emailInput, passwordInput, loginButton, inputContainer);
+main.append(emailInput, passwordInput, loginButton);
 document.body.append(app);

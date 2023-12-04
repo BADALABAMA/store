@@ -1,5 +1,3 @@
-import { Component } from './Component';
-import { IComponent } from './Component';
 interface IButtonEvent {
   type: string;
   listener: (event: Event) => void;
