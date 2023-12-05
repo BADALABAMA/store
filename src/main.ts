@@ -1,6 +1,6 @@
 import { Main, Header, App, Button, Input } from './components';
 import { Spinner } from 'spin.js';
-import { clearInputs } from './core/functions';
+import { clearInputs, updateProduct, deleteProduct } from './core/functions';
 
 import {
   getData,
@@ -99,7 +99,7 @@ const addProductBtn = new Button({
       type: 'click',
 
       listener: () => {
-        if (main.contains(inputContainer)) {
+        if (header.contains(inputContainer)) {
           createNewProduct(
             titleInput,
             priceInput,
@@ -113,8 +113,6 @@ const addProductBtn = new Button({
           descriptionInput.remove();
           imageInput.remove();
           addProductBtn.remove();
-        } else {
-          throw new Error(" input's  cannot be empty");
         }
       },
     },
@@ -143,6 +141,80 @@ const addNewProductBtn = new Button({
     },
   ],
 }).toHTML();
+const updateProductsBtn = new Button({
+  textContent: 'update product',
+  className: 'update_products_btn',
+  events: [
+    {
+      type: 'click',
+
+      listener: () => {
+        header.append(inputContainer);
+        if (!inputContainer.contains(titleInput)) {
+          inputContainer.append(
+            titleInput,
+            priceInput,
+            idInput,
+            updateProductBtn
+          );
+        }
+      },
+    },
+  ],
+}).toHTML();
+const updateProductBtn = new Button({
+  textContent: 'update product',
+  className: 'update_product_btn',
+  events: [
+    {
+      type: 'click',
+
+      listener: () => {
+        if (header.contains(inputContainer)) {
+          updateProduct(titleInput, priceInput, idInput, main);
+          titleInput.remove();
+          priceInput.remove();
+          idInput.remove();
+          updateProductBtn.remove();
+        }
+      },
+    },
+  ],
+}).toHTML();
+const deleteProductsBtn = new Button({
+  textContent: 'delete product',
+  className: 'delete_products_btn',
+  events: [
+    {
+      type: 'click',
+
+      listener: () => {
+        header.append(inputContainer);
+        if (!inputContainer.contains(titleInput)) {
+          inputContainer.append(idInput, deleteProductBtn);
+        }
+      },
+    },
+  ],
+}).toHTML();
+const deleteProductBtn = new Button({
+  textContent: 'delete product',
+  className: 'delete_product_btn',
+  events: [
+    {
+      type: 'click',
+
+      listener: () => {
+        if (header.contains(inputContainer)) {
+          deleteProduct(idInput, main);
+
+          idInput.remove();
+          deleteProductBtn.remove();
+        }
+      },
+    },
+  ],
+}).toHTML();
 
 const loginButton = new Button({
   textContent: 'Login',
@@ -157,7 +229,7 @@ const loginButton = new Button({
           main.appendChild(spinner.el);
           setTimeout(() => {
             getData(main);
-            main.append(addNewProductBtn);
+            main.append(addNewProductBtn, updateProductsBtn, deleteProductsBtn);
             spinner.stop();
           }, 2000);
 

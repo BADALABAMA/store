@@ -12,12 +12,12 @@ interface Product {
   images: string[];
 }
 interface IData {
-  title: string;
-  price: number;
-  description: string;
-  categoryId: number;
-  id: number;
-  images: string[];
+  title?: string;
+  price?: number;
+  description?: string;
+  categoryId?: number;
+  id?: number;
+  images?: string[];
 }
 enum Admin {
   email = 'admin@22.ua',
@@ -157,7 +157,7 @@ function createProductCard(
 
   node: HTMLElement
 ) {
-  const imageCard = new Card({
+  const imageCard: HTMLImageElement = new Card({
     tagName: 'img',
     className: 'product_image',
     id: '#',
@@ -165,8 +165,9 @@ function createProductCard(
     children: [],
   }).toHTML();
   imageCard.src = product.images[0] as string;
+  imageCard.alt = 'something went wrong';
 
-  const productTitle = new Card({
+  const productTitle: HTMLHeadingElement = new Card({
     tagName: 'h3',
     className: 'product_title',
     id: '#',
@@ -175,7 +176,7 @@ function createProductCard(
   }).toHTML();
   productTitle.textContent = product.title;
 
-  const productDescription = new Card({
+  const productDescription: HTMLParagraphElement = new Card({
     tagName: 'p',
     className: 'product_description',
     id: '#',
@@ -184,7 +185,7 @@ function createProductCard(
   }).toHTML();
   productDescription.textContent = product.description;
 
-  const productPrice = new Card({
+  const productPrice: HTMLParagraphElement = new Card({
     tagName: 'p',
     className: 'product_price',
     id: '#',
@@ -193,7 +194,7 @@ function createProductCard(
   }).toHTML();
   productPrice.textContent = `$${product.price.toFixed(2)}`;
 
-  const infoCard = new Card({
+  const infoCard: HTMLDivElement = new Card({
     tagName: 'div',
     className: 'product_info',
     children: [imageCard, productTitle, productDescription, productPrice],
@@ -221,7 +222,7 @@ function createPagination(
   currentPage: number,
   node: HTMLElement
 ) {
-  const totalPages = Math.ceil(data.length / 7);
+  const totalPages = Math.ceil(data.length / 10);
 
   const paginationContainer = document.createElement('div');
   paginationContainer.className = 'pagination';
@@ -257,7 +258,7 @@ export function validateEmail(email: HTMLInputElement) {
     email.value.includes('@') &&
     email.value.indexOf('.') > email.value.indexOf('@') &&
     email.value.length >= 4 &&
-    email.value === Admin.email
+    email.value.toLowerCase() === Admin.email
   ) {
     return true;
   } else {
@@ -270,7 +271,7 @@ export function validatePassword(password: HTMLInputElement) {
     password.value.length >= 5 &&
     /\d/.test(password.value) &&
     /[a-zA-Z]/.test(password.value) &&
-    password.value === Admin.password
+    password.value.toLowerCase() === Admin.password
   ) {
     return true;
   } else {
@@ -317,6 +318,91 @@ export async function createNewProduct(
     createProductCard(data, node);
     clearInputs(titleInput, priceInput, descriptionInput, imageInput);
     console.log('Success:', data);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+export async function updateProduct(
+  titleInput: HTMLInputElement,
+  priceInput: HTMLInputElement,
+  idInput: HTMLInputElement,
+  node: HTMLElement
+) {
+  const updateData: IData = {
+    title: titleInput.value,
+    price: parseInt(priceInput.value),
+    id: parseInt(idInput.value),
+  };
+  const url = ` https://api.escuelajs.co/api/v1/products/${idInput.value}`;
+  try {
+    const response = await fetch(url, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(updateData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const updatedProduct = await response.json();
+
+    const existingProductCard = document.getElementById(
+      `product_${updatedProduct.id}`
+    );
+
+    if (existingProductCard) {
+      const productTitle = existingProductCard.querySelector('.product_title');
+      const productPrice = existingProductCard.querySelector('.product_price');
+
+      if (productTitle && productPrice) {
+        productTitle.textContent = updatedProduct.title;
+        productPrice.textContent = `$${updatedProduct.price.toFixed(2)}`;
+      }
+    }
+
+    clearInputs(titleInput, priceInput, idInput);
+    console.log('Success:', updatedProduct);
+  } catch (error) {
+    console.error('Error:', error);
+  }
+}
+
+export async function deleteProduct(
+  idInput: HTMLInputElement,
+  node: HTMLElement
+) {
+  const deleteData: IData = {
+    id: parseInt(idInput.value),
+  };
+  const url = ` https://api.escuelajs.co/api/v1/products/${idInput.value}`;
+  try {
+    const response = await fetch(url, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(deleteData),
+    });
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`);
+    }
+
+    const deletedProduct = await response.json();
+
+    const existingProductCard = document.getElementById(
+      `product_${deletedProduct.id}`
+    );
+
+    if (existingProductCard) {
+      existingProductCard.remove();
+    }
+
+    clearInputs(idInput);
+    console.log('Success:', deletedProduct);
   } catch (error) {
     console.error('Error:', error);
   }

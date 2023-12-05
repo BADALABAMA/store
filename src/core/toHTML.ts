@@ -3,16 +3,8 @@ import { IComponent } from '../components/Component';
 
 export const toHTML = (instance: IComponent) => {
   if (instance instanceof Component) {
-    const {
-      tagName,
-      className,
-      id,
-      children,
-      events,
-      textContent,
-      attrs,
-      src,
-    } = instance;
+    const { tagName, className, id, children, events, textContent, attrs } =
+      instance;
     const element: any = document.createElement(tagName);
 
     element.className = className || '';
