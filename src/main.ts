@@ -9,7 +9,10 @@ import {
   createNewProduct,
 } from './core/functions';
 import './style.css';
+const existingUsersString = localStorage.getItem('Users');
+let users = existingUsersString ? JSON.parse(existingUsersString) : [];
 
+let isAdmin = false;
 //spinner
 const opts = {
   lines: 12, // The number of lines to draw
@@ -231,12 +234,20 @@ const loginButton = new Button({
             getData(main);
             main.append(addNewProductBtn, updateProductsBtn, deleteProductsBtn);
             spinner.stop();
+            isAdmin = true;
           }, 2000);
-
-          emailInput.remove();
-          passwordInput.remove();
-          loginButton.remove();
+        } else {
+          const user = {
+            email: emailInput.value,
+            password: passwordInput.value,
+          };
+          users.push(user);
+          localStorage.setItem('Users', JSON.stringify(users));
+          localStorage.setItem('CurrentUser', user.email);
         }
+        emailInput.remove();
+        passwordInput.remove();
+        loginButton.remove();
         clearInputs(emailInput, passwordInput);
       },
     },
