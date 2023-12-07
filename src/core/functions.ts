@@ -254,6 +254,7 @@ function createPagination(
     pageButton.addEventListener('click', (e) => {
       e.preventDefault();
       const spinner = new Spinner(opts).spin();
+
       node.appendChild(spinner.el);
       setTimeout(() => {
         spinner.stop();

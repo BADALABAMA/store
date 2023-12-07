@@ -1,6 +1,11 @@
 import { Main, Header, App, Button, Input } from './components';
 import { Spinner } from 'spin.js';
-import { clearInputs, updateProduct, deleteProduct } from './core/functions';
+import {
+  clearInputs,
+  updateProduct,
+  deleteProduct,
+  Admin,
+} from './core/functions';
 
 import {
   getData,
@@ -244,6 +249,14 @@ const loginButton = new Button({
           users.push(user);
           localStorage.setItem('Users', JSON.stringify(users));
           localStorage.setItem('CurrentUser', user.email);
+          const spinner = new Spinner(opts).spin();
+          main.appendChild(spinner.el);
+          setTimeout(() => {
+            getData(main);
+
+            spinner.stop();
+            isAdmin = false;
+          }, 2000);
         }
         emailInput.remove();
         passwordInput.remove();
